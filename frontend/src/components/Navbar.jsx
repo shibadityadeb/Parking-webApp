@@ -7,8 +7,8 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Don't show navbar on login page
-  if (location.pathname === '/login') {
+  // Don't show navbar on login/signup pages
+  if (location.pathname === '/login' || location.pathname === '/signup') {
     return null;
   }
 
