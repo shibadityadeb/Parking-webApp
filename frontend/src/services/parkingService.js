@@ -10,7 +10,10 @@ const apiClient = axios.create({
   baseURL: `${API_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
+  timeout: 30000, // 30 second timeout
+  withCredentials: true,
 });
 
 // Add JWT token to all requests
@@ -36,6 +39,14 @@ apiClient.interceptors.response.use(
       localStorage.removeItem('authUser');
       window.location.href = '/login';
     }
+    
+    // Handle network errors
+    if (error.code === 'ECONNABORTED') {
+      error.message = 'Request timeout - backend server may be unreachable or unresponsive';
+    } else if (!error.response && error.message === 'Network Error') {
+      error.message = 'Network error - unable to connect to backend server. Check if it\'s running.';
+    }
+    
     return Promise.reject(error);
   }
 );

@@ -50,11 +50,21 @@ export const AuthProvider = ({ children }) => {
     try {
       setAuth((prev) => ({ ...prev, loading: true, error: null }));
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
         body: JSON.stringify({ name, email, password, role }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
@@ -76,8 +86,21 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, user: data.user };
     } catch (error) {
-      const errorMsg = error.message || 'Signup failed';
+      let errorMsg = 'Signup failed';
+      
+      if (error.name === 'AbortError') {
+        errorMsg = 'Request timeout - backend server may be unreachable';
+      } else if (error instanceof TypeError) {
+        errorMsg = `Network error: ${error.message}. Make sure the backend server is running.`;
+      } else {
+        errorMsg = error.message || 'Signup failed';
+      }
+      
       console.error('Signup error:', error);
+      setAuth((prev) => ({ ...prev, loading: false, error: errorMsg }));
+      return { success: false, error: errorMsg };
+    }
+  };
       setAuth((prev) => ({ ...prev, loading: false, error: errorMsg }));
       return { success: false, error: errorMsg };
     }
@@ -90,11 +113,21 @@ export const AuthProvider = ({ children }) => {
     try {
       setAuth((prev) => ({ ...prev, loading: true, error: null }));
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
@@ -116,7 +149,16 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, user: data.user };
     } catch (error) {
-      const errorMsg = error.message || 'Login failed';
+      let errorMsg = 'Login failed';
+      
+      if (error.name === 'AbortError') {
+        errorMsg = 'Request timeout - backend server may be unreachable';
+      } else if (error instanceof TypeError) {
+        errorMsg = `Network error: ${error.message}. Make sure the backend server is running.`;
+      } else {
+        errorMsg = error.message || 'Login failed';
+      }
+      
       console.error('Login error:', error);
       setAuth((prev) => ({ ...prev, loading: false, error: errorMsg }));
       return { success: false, error: errorMsg };
