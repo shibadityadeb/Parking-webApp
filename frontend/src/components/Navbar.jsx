@@ -26,13 +26,13 @@ export default function Navbar() {
   const getRoleBasedNav = () => {
     if (user?.role === 'ADMIN') {
       return [
-        { label: 'Home', icon: '🏠', path: '/home' },
-        { label: 'Admin', icon: '📊', path: '/admin' },
+        { label: 'Dashboard', path: '/home' },
+        { label: 'Admin', path: '/admin' },
       ];
     } else if (user?.role === 'MANAGER') {
       return [
-        { label: 'Home', icon: '🏠', path: '/home' },
-        { label: 'History', icon: '📝', path: '/history' },
+        { label: 'Dashboard', path: '/home' },
+        { label: 'History', path: '/history' },
       ];
     }
     return [];
@@ -42,81 +42,32 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav
-      style={{
-        background: '#FFFFFF',
-        borderBottom: '1px solid #E5E7EB',
-        padding: '0 1rem',
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-      }}
-    >
+    <nav className="navbar">
       <div className="container">
-        <div className="flex-between" style={{ height: '60px' }}>
-          <div
-            style={{
-              fontSize: '1.5rem',
-              fontWeight: '600',
-              color: '#5B4BFF',
-              cursor: 'pointer',
-            }}
-            onClick={() => navigate('/home')}
-          >
-            🚗 Smart Parking
+        <div className="navbar-content">
+          <div className="navbar-brand" onClick={() => navigate('/home')}>
+            Parking Manager
           </div>
-          <div className="flex" style={{ gap: '2rem', alignItems: 'center' }}>
-            {/* Nav Items */}
+          
+          <div className="navbar-nav">
             {navItems.map((item) => (
               <NavButton
                 key={item.path}
                 label={item.label}
-                icon={item.icon}
                 isActive={isActive(item.path)}
                 onClick={() => navigate(item.path)}
               />
             ))}
 
-            {/* Role Badge */}
-            <div
-              style={{
-                padding: '0.5rem 1rem',
-                background: user?.role === 'ADMIN' ? '#FEE2E2' : '#DBEAFE',
-                color: user?.role === 'ADMIN' ? '#991B1B' : '#1E40AF',
-                borderRadius: '0.5rem',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-              }}
-            >
-              {user?.role === 'ADMIN' ? '📊 Admin' : '⚙️ Manager'}
+            <div className="navbar-user">
+              <span className={`role-badge ${user?.role?.toLowerCase()}`}>
+                {user?.role}
+              </span>
+              
+              <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
+                Sign out
+              </button>
             </div>
-
-            {/* Logout Button */}
-            <button
-              onClick={handleLogout}
-              style={{
-                background: '#EF4444',
-                color: '#FFFFFF',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                fontWeight: '500',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.background = '#DC2626';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.background = '#EF4444';
-              }}
-            >
-              <span>🚪</span>
-              <span>Logout</span>
-            </button>
           </div>
         </div>
       </div>
@@ -124,36 +75,13 @@ export default function Navbar() {
   );
 }
 
-function NavButton({ label, icon, isActive, onClick }) {
+function NavButton({ label, isActive, onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{
-        background: isActive ? '#5B4BFF' : 'transparent',
-        color: isActive ? '#FFFFFF' : '#5B4BFF',
-        border: 'none',
-        cursor: 'pointer',
-        padding: '0.5rem 1rem',
-        borderRadius: '0.5rem',
-        fontWeight: '500',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        transition: 'all 0.3s ease',
-      }}
-      onMouseOver={(e) => {
-        if (!isActive) {
-          e.currentTarget.style.background = 'rgba(91, 75, 255, 0.1)';
-        }
-      }}
-      onMouseOut={(e) => {
-        if (!isActive) {
-          e.currentTarget.style.background = 'transparent';
-        }
-      }}
+      className={`nav-button ${isActive ? 'active' : ''}`}
     >
-      <span>{icon}</span>
-      <span>{label}</span>
+      {label}
     </button>
   );
 }

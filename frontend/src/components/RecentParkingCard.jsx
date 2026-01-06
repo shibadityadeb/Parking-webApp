@@ -10,50 +10,34 @@ export default function RecentParkingCard({ parking }) {
   };
 
   return (
-    <div className="card">
-      <div className="flex-between" style={{ marginBottom: '1rem' }}>
-        <div>
-          <h3 style={{ marginBottom: '0.25rem' }}>{parking.location}</h3>
-          <p className="text-muted">{parking.city}</p>
+    <div className="parking-card">
+      <div className="parking-card-header">
+        <div className="parking-location">
+          <h3 className="location-name">{parking.location}</h3>
+          <p className="location-city">{parking.city}</p>
         </div>
-        <span
-          className={`badge ${parking.is_paid ? 'badge-success' : 'badge-warning'}`}
-        >
-          {parking.is_paid ? '✓ Paid' : '⏳ Pending'}
+        <span className={`badge ${parking.is_paid ? 'badge-success' : 'badge-warning'}`}>
+          {parking.is_paid ? 'Paid' : 'Pending'}
         </span>
       </div>
 
-      <div className="flex-between" style={{ marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-            Car Number
-          </p>
-          <p style={{ fontWeight: '600' }}>
-            {parking.cars?.car_number || 'N/A'}
-          </p>
+      <div className="parking-details">
+        <div className="detail-item">
+          <span className="detail-label">Car Number</span>
+          <span className="detail-value">{parking.cars?.car_number || 'N/A'}</span>
         </div>
-        <div>
-          <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-            Duration
-          </p>
-          <p style={{ fontWeight: '600' }}>
-            {parking.duration_minutes} mins
-          </p>
+        <div className="detail-item">
+          <span className="detail-label">Duration</span>
+          <span className="detail-value">{parking.duration_minutes} mins</span>
         </div>
-        <div>
-          <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-            Fee
-          </p>
-          <p style={{ fontWeight: '600', color: '#22C55E' }}>
-            ₹{parking.fee}
-          </p>
+        <div className="detail-item">
+          <span className="detail-label">Fee</span>
+          <span className="detail-value fee-amount">₹{parking.fee}</span>
         </div>
       </div>
 
-      <div style={{ borderTop: '1px solid #E5E7EB', paddingTop: '1rem' }}>
-        <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-          {formatDate(parking.parking_date)}
-        </p>
+      <div className="parking-card-footer">
+        <span className="parking-date">{formatDate(parking.parking_date)}</span>
       </div>
     </div>
   );

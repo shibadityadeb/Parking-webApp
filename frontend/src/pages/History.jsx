@@ -16,8 +16,8 @@ export default function History() {
     <div>
       <Header />
 
-      <main className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <div className="grid cols-1">
+      <main className="container" style={{ paddingTop: 'var(--space-xl)', paddingBottom: 'var(--space-xl)' }}>
+        <div className="grid cols-1 gap-xl">
           <DriverForm key={`driver-${refreshKey}`} onDriverAdded={handleFormSubmit} />
           <CarForm key={`car-${refreshKey}`} onCarAdded={handleFormSubmit} />
           <ParkingForm

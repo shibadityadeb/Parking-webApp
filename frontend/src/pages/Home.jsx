@@ -39,41 +39,42 @@ export default function Home() {
     <div>
       <Header />
 
-      <main className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <div className="grid cols-1" style={{ marginBottom: '3rem' }}>
+      <main className="container" style={{ paddingTop: 'var(--space-xl)', paddingBottom: 'var(--space-xl)' }}>
+        <div className="grid cols-1" style={{ marginBottom: 'var(--space-2xl)' }}>
           <ScanToParkCard />
         </div>
 
         <div>
-          <h2 style={{ marginBottom: '1.5rem' }}>Recent Parking</h2>
+          <div className="section-header">
+            <h2>Recent Activity</h2>
+          </div>
 
           {error && <div className="alert alert-error">{error}</div>}
 
           {loading ? (
-            <div className="text-center" style={{ padding: '2rem' }}>
-              <div className="spinner" style={{ margin: '0 auto' }}></div>
+            <div className="loading-state">
+              <div className="spinner"></div>
+              <p>Loading parking data...</p>
             </div>
           ) : parkings.length === 0 ? (
-            <div className="alert alert-info">
-              No parking entries yet. Create your first entry!
+            <div className="empty-state">
+              <p>No parking entries yet</p>
+              <span className="text-sm text-secondary">Create your first parking entry to get started</span>
             </div>
           ) : (
-            <div className="grid cols-1">
+            <div className="parking-list">
               {parkings.map((parking) => (
-                <div key={parking.id}>
+                <div key={parking.id} className="parking-item">
                   <RecentParkingCard parking={parking} />
                   {!parking.is_paid && (
-                    <button
-                      className="btn btn-success"
-                      onClick={() => handleMarkAsPaid(parking.id)}
-                      style={{
-                        width: '100%',
-                        marginTop: '0.5rem',
-                        fontSize: '0.875rem',
-                      }}
-                    >
-                      Mark as Paid
-                    </button>
+                    <div className="parking-actions">
+                      <button
+                        className="btn btn-success btn-sm"
+                        onClick={() => handleMarkAsPaid(parking.id)}
+                      >
+                        Mark as Paid
+                      </button>
+                    </div>
                   )}
                 </div>
               ))}
