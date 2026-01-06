@@ -101,10 +101,6 @@ export const AuthProvider = ({ children }) => {
       return { success: false, error: errorMsg };
     }
   };
-      setAuth((prev) => ({ ...prev, loading: false, error: errorMsg }));
-      return { success: false, error: errorMsg };
-    }
-  };
 
   /**
    * Login with email and password
