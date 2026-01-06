@@ -166,6 +166,9 @@ export const AuthProvider = ({ children }) => {
    */
   const logout = async () => {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       // Call backend logout endpoint
       await fetch(`${API_URL}/api/auth/logout`, {
         method: 'POST',
@@ -173,7 +176,11 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${auth.token}`,
         },
+        credentials: 'include',
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
