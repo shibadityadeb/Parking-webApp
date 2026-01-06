@@ -1,146 +1,307 @@
-# Parking Management Web App
+# 🚗 Parking Management System
 
-A full-stack parking management application built with React, Node.js/Express, and Supabase.
+A comprehensive web-based parking management system built with React, Node.js, Express, and Supabase. The system provides role-based access control for different user types and includes features like QR code scanning for quick parking registration.
 
-## Project Structure
+## ✨ Features
+
+### Core Features
+- **User Authentication & Authorization** - JWT-based authentication with role-based access control
+- **QR Code Scanning** - Quick parking registration using camera/QR scanner
+- **Parking Management** - Create, view, and manage parking entries
+- **Driver Management** - Add and manage driver information
+- **Car Management** - Register and manage vehicle information
+- **Payment Tracking** - Mark parking entries as paid/unpaid
+- **Admin Dashboard** - System insights and user management
+- **Responsive Design** - Mobile-friendly interface
+
+### Role-Based Features
+- **Admin**: Full system access, user management, system insights
+- **Manager**: Driver/car management, parking history, payment tracking
+- **User**: Basic parking registration and viewing
+
+## 🛠 Tech Stack
+
+### Frontend
+- **React 18** - Modern React with hooks
+- **React Router DOM** - Client-side routing
+- **Vite** - Fast build tool and dev server
+- **Axios** - HTTP client for API calls
+- **React QR Scanner** - QR code scanning functionality
+- **CSS3** - Custom styling with CSS variables
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web application framework
+- **JWT** - JSON Web Tokens for authentication
+- **bcrypt** - Password hashing
+- **CORS** - Cross-origin resource sharing
+- **dotenv** - Environment variable management
+
+### Database & Services
+- **Supabase** - Backend-as-a-Service (PostgreSQL database)
+- **Supabase Auth** - Authentication service
+- **Supabase Storage** - File storage (if needed)
+
+## 📁 Project Structure
 
 ```
-parking-app/
-├── frontend/          # React + Vite
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── styles/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── index.html
-│   └── package.json
-├── backend/           # Node.js + Express
-│   ├── src/
-│   │   ├── routes/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   └── server.js
-│   └── package.json
-└── README.md
+parking-assignment/
+└── parking-app/
+    ├── backend/
+    │   ├── src/
+    │   │   ├── controllers/
+    │   │   │   ├── adminController.js
+    │   │   │   ├── authController.js
+    │   │   │   ├── carController.js
+    │   │   │   ├── driverController.js
+    │   │   │   └── parkingController.js
+    │   │   ├── middleware/
+    │   │   │   └── auth.js
+    │   │   ├── routes/
+    │   │   │   ├── admin.js
+    │   │   │   ├── auth.js
+    │   │   │   ├── cars.js
+    │   │   │   ├── drivers.js
+    │   │   │   └── parkings.js
+    │   │   ├── services/
+    │   │   │   └── supabase.js
+    │   │   └── server.js
+    │   ├── .env
+    │   └── package.json
+    └── frontend/
+        ├── src/
+        │   ├── components/
+        │   │   ├── CarForm.jsx
+        │   │   ├── DriverForm.jsx
+        │   │   ├── Header.jsx
+        │   │   ├── Navbar.jsx
+        │   │   ├── QRScanner.jsx
+        │   │   ├── ScanToParkCard.jsx
+        │   │   └── ...
+        │   ├── contexts/
+        │   │   └── AuthContext.jsx
+        │   ├── pages/
+        │   │   ├── AdminDashboard.jsx
+        │   │   ├── Home.jsx
+        │   │   ├── Login.jsx
+        │   │   └── ...
+        │   ├── services/
+        │   │   ├── adminService.js
+        │   │   ├── parkingService.js
+        │   │   └── supabaseClient.js
+        │   ├── styles/
+        │   │   └── theme.css
+        │   └── App.jsx
+        ├── .env
+        └── package.json
 ```
 
-## Tech Stack
+## 📋 Prerequisites
 
-- **Frontend**: React 18, Vite, Axios
-- **Backend**: Express.js, Node.js
-- **Database**: Supabase (PostgreSQL)
-- **Styling**: CSS (custom theme)
+Before running this application, make sure you have the following installed:
 
-## Getting Started
+- **Node.js** (v16.0.0 or higher)
+- **npm** or **yarn**
+- **Git**
+- A **Supabase** account and project
 
-### Prerequisites
+## 🚀 Installation
 
-- Node.js 16+
-- npm or yarn
-- Supabase account
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd parking-assignment/parking-app
+   ```
 
-### Setup Supabase
+2. **Install Backend Dependencies**
+   ```bash
+   cd backend
+   npm install
+   ```
 
-1. Create a Supabase project at https://supabase.com
-2. Create the following tables:
+3. **Install Frontend Dependencies**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
 
-#### drivers
-```sql
-CREATE TABLE drivers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
+## ⚙️ Configuration
 
-#### cars
-```sql
-CREATE TABLE cars (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  driver_id UUID NOT NULL REFERENCES drivers(id),
-  car_name TEXT NOT NULL,
-  car_number TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
+### Backend Configuration
 
-#### parkings
-```sql
-CREATE TABLE parkings (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  car_id UUID NOT NULL REFERENCES cars(id),
-  location TEXT NOT NULL,
-  city TEXT NOT NULL,
-  parking_date DATE NOT NULL,
-  duration_minutes INTEGER NOT NULL,
-  fee INTEGER NOT NULL,
-  is_paid BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
+1. **Create `.env` file in the backend directory:**
+   ```env
+   SUPABASE_URL=your_supabase_project_url
+   SUPABASE_KEY=your_supabase_anon_key
+   JWT_SECRET=your_super_secret_jwt_key
+   FRONTEND_URL=http://localhost:3000
+   PORT=5000
+   ```
 
-### Backend Setup
+### Frontend Configuration
 
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Edit .env with your Supabase credentials
-npm run dev
-```
+1. **Create `.env` file in the frontend directory:**
+   ```env
+   VITE_SUPABASE_URL=your_supabase_project_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_API_URL=http://localhost:5000/api
+   ```
 
-### Frontend Setup
+### Supabase Setup
 
-```bash
-cd frontend
-npm install
-cp .env.example .env
-# Edit .env with your Supabase credentials and API URL
-npm run dev
-```
+1. **Create a new Supabase project**
+2. **Set up the database tables** (you may need to create these based on your schema)
+3. **Configure authentication settings**
+4. **Get your project URL and anon key from the Supabase dashboard**
 
-## API Endpoints
+## 🏃‍♂️ Running the Application
 
-### Drivers
-- `POST /api/drivers` - Add new driver
+### Development Mode
+
+1. **Start the Backend Server**
+   ```bash
+   cd backend
+   npm run dev
+   ```
+   The backend will run on `http://localhost:5000`
+
+2. **Start the Frontend Development Server**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+   The frontend will run on `http://localhost:5173`
+
+### Production Mode
+
+1. **Build the Frontend**
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+2. **Start the Backend**
+   ```bash
+   cd backend
+   npm start
+   ```
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+- `POST /api/auth/login` - User login
+- `POST /api/auth/signup` - User registration
+- `POST /api/auth/logout` - User logout
+
+### Driver Management
 - `GET /api/drivers` - Get all drivers
-- `GET /api/drivers/:id` - Get driver by ID
+- `POST /api/drivers` - Create new driver
+- `PUT /api/drivers/:id` - Update driver
+- `DELETE /api/drivers/:id` - Delete driver
 
-### Cars
-- `POST /api/cars` - Add new car
-- `GET /api/cars` - Get cars by driver
-- `GET /api/cars/all` - Get all cars
-- `GET /api/cars/:id` - Get car by ID
+### Car Management
+- `GET /api/cars` - Get all cars
+- `POST /api/cars` - Register new car
+- `PUT /api/cars/:id` - Update car
+- `DELETE /api/cars/:id` - Delete car
 
-### Parkings
+### Parking Management
+- `GET /api/parkings` - Get all parking entries
 - `POST /api/parkings` - Create parking entry
-- `GET /api/parkings` - Get all parkings
-- `GET /api/parkings/:id` - Get parking by ID
-- `PATCH /api/parkings/:id/pay` - Mark parking as paid
-- `GET /api/parkings/car/:car_id` - Get parkings by car
+- `PUT /api/parkings/:id/pay` - Mark as paid
 - `DELETE /api/parkings/:id` - Delete parking entry
 
-## Features
+### Admin Endpoints
+- `GET /api/admin/insights` - Get system insights
+- `GET /api/admin/users` - Get all users
+- `PUT /api/admin/users/:id/role` - Update user role
 
-- ✅ Add drivers
-- ✅ Add cars linked to drivers
-- ✅ Create parking entries
-- ✅ Mark parking as paid
-- ✅ View recent parking history
-- ✅ Responsive design
-- ✅ Clean UI with gradient theme
+## 👥 User Roles
 
-## Color Theme
+### Admin
+- Full system access
+- User management
+- System insights and analytics
+- All manager and user permissions
 
-- Primary Gradient: #5B4BFF → #7B6CFF
-- Accent Yellow: #FFC107
-- Background: #F8F9FF
-- Success Green: #22C55E
-- Text Dark: #1F2937
+### Manager
+- Driver management (CRUD operations)
+- Car management (CRUD operations)
+- Parking history and management
+- Payment tracking
+- All user permissions
 
-## License
+### User (Default)
+- View parking dashboard
+- Create parking entries
+- QR code scanning
+- View personal parking history
 
-ISC
+
+## 🚀 Deployment
+
+### Frontend (Vercel)
+1. Connect your GitHub repository to Vercel
+2. Set environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
+
+### Backend (Railway/Heroku)
+1. Create a new project on your preferred platform
+2. Set environment variables
+3. Deploy from GitHub repository
+
+### Environment Variables for Production
+Make sure to set all required environment variables in your deployment platform.
+
+## 🎯 Key Features Explained
+
+### QR Code Scanning
+- Click "Scan QR Code" button on the dashboard
+- Grant camera permissions when prompted
+- Position QR code within the scanning frame
+- Automatic parking registration upon successful scan
+
+### Role-Based Access Control
+- Different navigation menus based on user role
+- Protected routes that redirect unauthorized users
+- Role-specific functionality and permissions
+
+### Responsive Design
+- Mobile-first approach
+- Optimized for tablets and desktops
+- Touch-friendly interface elements
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the ISC License.
+
+## 🐛 Known Issues
+
+- QR scanner currently uses a simulation for demo purposes
+- Camera permissions need to be granted for QR scanning
+- Some mobile browsers may have camera access limitations
+
+## 🔮 Future Enhancements
+
+- Real-time notifications
+- Payment gateway integration
+- Advanced reporting and analytics
+- Mobile app development
+- Integration with parking hardware systems
+- Multi-language support
+
+## 📞 Support
+
+For support and questions, please create an issue in the GitHub repository.
+
+---
+
+**Made with ❤️ by Shibaditya Deb**
