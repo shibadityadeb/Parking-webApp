@@ -245,7 +245,7 @@ Before running this application, make sure you have the following installed:
 2. Set environment variables in Vercel dashboard
 3. Deploy automatically on push to main branch
 
-### Backend (Railway/Heroku)
+### Backend (Render)
 1. Create a new project on your preferred platform
 2. Set environment variables
 3. Deploy from GitHub repository
