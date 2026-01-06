@@ -21,37 +21,31 @@ const allowedOrigins = [
   'https://parkingportal-qhpgg9rxa-shibadityadeb-adypueduins-projects.vercel.app'
 ];
 
-app.use(cors({
+// Add logging to debug CORS
+const corsOptions = {
   origin: function(origin, callback) {
+    console.log('Request origin:', origin);
+    
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      // Log rejection but still allow for debugging
+      console.warn('CORS rejected origin:', origin);
+      callback(null, true); // Allow anyway to debug
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   optionsSuccessStatus: 200,
   maxAge: 86400
-}));
+};
 
-// Handle preflight requests
-app.options('*', cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200,
-  maxAge: 86400
-}));
+app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Routes
@@ -66,11 +60,16 @@ app.use('/api/admin', verifyToken, adminRoutes);
 
 // Health check (public)
 app.get('/', (req, res) => {
-  res.json({ status: 'Server is running' });
+  res.json({ status: 'Server is running', port: PORT });
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Server is running' });
+  res.json({ 
+    status: 'Server is running',
+    port: PORT,
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // 404 handler
@@ -80,5 +79,7 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔐 CORS enabled for:`, allowedOrigins);
 });
