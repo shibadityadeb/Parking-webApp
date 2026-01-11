@@ -89,14 +89,14 @@ export default function Login() {
         </div>
 
         <div className="demo-credentials">
-          <h4>Demo Accounts</h4>
+          <h4>Login Credentials</h4>
           <div className="demo-account">
-            <span className="demo-role">Admin:</span>
-            <span>admin@parking.com / admin123</span>
+            <span className="demo-role">Admin Login:</span>
+            <span>admin123</span>
           </div>
           <div className="demo-account">
-            <span className="demo-role">Manager:</span>
-            <span>manager@parking.com / manager123</span>
+            <span className="demo-role">Manager Login:</span>
+            <span>manager123</span>
           </div>
         </div>
       </div>

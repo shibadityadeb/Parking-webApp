@@ -183,13 +183,13 @@ export default function Signup() {
         </div>
 
         <div className="demo-credentials">
-          <h4>Required Passwords</h4>
+          <h4>Login Passwords</h4>
           <div className="demo-account">
-            <span className="demo-role">Admin:</span>
+            <span className="demo-role">Admin Password:</span>
             <span>admin123</span>
           </div>
           <div className="demo-account">
-            <span className="demo-role">Manager:</span>
+            <span className="demo-role">Manager Password:</span>
             <span>manager123</span>
           </div>
         </div>
