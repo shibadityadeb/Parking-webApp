@@ -19,6 +19,10 @@ A comprehensive web-based parking management system built with React, Node.js, E
 - **Manager**: Driver/car management, parking history, payment tracking
 - **User**: Basic parking registration and viewing
 
+### Supabase Schema Design
+
+<img width="2414" height="1684" alt="supabase-schema-itrizshuzklhkxlynnaj" src="https://github.com/user-attachments/assets/6ea73919-7d13-4754-abac-57b4d90726a3" />
+
 ## 🛠 Tech Stack
 
 ### Frontend
@@ -231,11 +235,6 @@ Before running this application, make sure you have the following installed:
 - Payment tracking
 - All user permissions
 
-### User (Default)
-- View parking dashboard
-- Create parking entries
-- QR code scanning
-- View personal parking history
 
 
 ## 🚀 Deployment
@@ -285,15 +284,7 @@ Make sure to set all required environment variables in your deployment platform.
 - QR scanner currently uses a simulation for demo purposes
 - Camera permissions need to be granted for QR scanning
 - Some mobile browsers may have camera access limitations
-
-## 🔮 Future Enhancements
-
-- Real-time notifications
-- Payment gateway integration
-- Advanced reporting and analytics
-- Mobile app development
-- Integration with parking hardware systems
-- Multi-language support
+- Backend may get idle as it is in the free tier-version of render
 
 ## 📞 Support
 
